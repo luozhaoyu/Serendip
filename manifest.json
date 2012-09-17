@@ -1,0 +1,22 @@
+{
+    "name": "Super Save",
+    "version": "0.1",
+    "manifest_version": 2,
+    "description": "Save your love the first time you see",
+    "background": {
+        "scripts": ["background.js"]
+    },
+    "permissions": [
+        "tabs",
+        "experimental",
+        "<all_urls>"
+        ],
+    "content_scripts": [
+    {
+        "matches": ["<all_urls>"],
+        "js": [
+            "content.js"
+            ]
+    }
+    ]
+}
