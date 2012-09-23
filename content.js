@@ -1,23 +1,39 @@
-key_func_mappings = {
-    'S': savePicture
-}
 
-function responseHandler(response) {
+responseHandler = function(response) {
     console.log('response: ' + response);
 }
 
-function biggerPicture(x, y)
-{
+biggerPicture = function(x, y) {
     return x['size'] - y['size'];
 }
 
-function savePicture() {
+getImgElements = function() {
+    var imgs = document.getElementsByTagName('img');
+    var visibleImgs = [];
+    var ix, iy;
+    for (var i = 0; i < imgs.length; i++) {
+        img = imgs[i];
+        if ((img.x != undefined) && (img.y != undefined)) {
+            ix = img.x + img.width / 2;
+            iy = img.y + img.height / 2;
+        } else {
+            console.log(img.src + '没有属性x和y');
+            continue;
+        }
+        if ((this.scrollX < ix) && (ix < this.scrollX + window.innerWidth) &&
+            (this.scrollY < iy) && (iy < this.scrollY + window.outerHeight))
+            visibleImgs.push(img);
+    }
+    return visibleImgs;
+}
+
+savePicture = function() {
     var message, suffix, target;
     message = location.href;
     suffix = message.split('.').pop;
     if (suffix != 'jpg') {
         var imgs, pics = [];//, i = 0;
-        imgs = document.getElementsByTagName('img');
+        imgs = getImgElements();
         if (imgs && imgs.length > 0)
         {
             for (var i = 0; i < imgs.length; i++)
@@ -37,24 +53,14 @@ function savePicture() {
 }
 
 
-function show(e) {
-    var str;
-    str = e;
-    for (var i in e) {
-        str += i + ': ' + e[i];
-    }
-    alert(str);
-}
-
-
-function getKeyFromIdentifier(keyevent) {
+getKeyFromIdentifier = function(keyevent) {
     var unicode;
     unicode = "0x" + keyevent['keyIdentifier'].substring(2);
     return String.fromCharCode(parseInt(unicode)).toLowerCase();
 }
 
 
-function onKeyDown(keyevent) {
+onKeyDown = function(keyevent) {
     var k, keycode;
     keycode = keyevent['keyCode'];
     if (keycode > 31) {  // ignore ctrl alt things...
@@ -73,8 +79,22 @@ function onKeyDown(keyevent) {
     }
 }
 
-function init() {
+init = function() {
     document.addEventListener("keydown", onKeyDown, true);
+}
+
+// utils
+show = function(e) {
+    var str;
+    str = e;
+    for (var i in e) {
+        str += i + ': ' + e[i];
+    }
+    alert(str);
+}
+
+key_func_mappings = {
+    'S': savePicture
 }
 
 init();
