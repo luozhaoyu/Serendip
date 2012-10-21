@@ -30,7 +30,7 @@ getImgElements = function() {
 savePicture = function() {
     var message, suffix, target;
     message = location.href;
-    suffix = message.split('.').pop;
+    suffix = message.split('.').pop();
     if (suffix != 'jpg') {
         var imgs, pics = [];//, i = 0;
         imgs = getImgElements();
@@ -39,17 +39,23 @@ savePicture = function() {
             for (var i = 0; i < imgs.length; i++)
             {
                 pics[i] = {
+                    height: imgs[i]['height'],
+                    width: imgs[i]['width'],
                     size: imgs[i]['height'] * imgs[i]['width'],
                     src: imgs[i]['src']
                 }
             }
             pics.sort(biggerPicture);
-            target = pics.pop()['src'];
+            target = pics.pop();
         }
+        if (target && confirm("您是否想要保存: " + target['width'] + '*' + target['height'] +
+                target['src']))
+            chrome.extension.sendMessage(target['src'], responseHandler);
+    } else { // may not neccessary
+        if (confirm("您是否想要保存: " + message))
+            chrome.extension.sendMessage(message, responseHandler);
     }
 
-    if (target && confirm("您是否想要保存: " + target))
-        chrome.extension.sendMessage(target, responseHandler);
 }
 
 

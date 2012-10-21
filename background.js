@@ -4,7 +4,9 @@ function onMessage(request, sender, sendResponse) {
         'request': request,
         'sender': sender
     }
-    chrome.experimental.downloads.download({url: request}, function(x){console.log(x);});
+    filename = new Date().toISOString().replace(/[\.|:]/g, '') + '.' + request.split('.').pop();
+    console.log(filename);
+    chrome.experimental.downloads.download({saveAs: true, url: request, filename: filename}, function(x){console.log(x);});
     sendResponse(res);
 }
 function init() {
