@@ -1,7 +1,7 @@
-Super-Save
+Serendip
 ==========
 
-Save the biggest visible picture on your screen.
+Save the biggest visible picture in your chrome.
 
 Press 'S', then choose the folder to save your picture!
 
