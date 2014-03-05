@@ -26,9 +26,35 @@ getVisibleImgs = function() {
     return visibleImgs;
 };
 
+getTopDomain = function(src) {
+    var domain;
+    try {
+        domain = src.split('/')[2];
+        topDomain = domain.split('.').slice(-2).join('.');
+    } catch (err) {
+        alert(err.description);
+    }
+    return topDomain;
+};
+
+
+hackSinaimg = function(src) {
+    var slices;
+    slices = src.split('/');
+    if (slices.length == 5) {
+        slices[3] = 'large';  // download the large picture directly
+        return slices.join('/');
+    } else {
+        console.log("Not hacking:\t" + src);
+        return src;
+    }
+};
+
+
 savePicture = function() {
     var target;
     var imgs, pics = [];
+    var src;
     imgs = getVisibleImgs();
     if (imgs && imgs.length > 0) {
         for (var i = 0; i < imgs.length; i++) {
@@ -50,8 +76,12 @@ savePicture = function() {
 
     if (target && (target['size'] > 400 * 300 ||
         confirm("Image is too small, are you sure? " + target['width'] + '*' + target['height']))) {
-            console.log(target['src']);
-            chrome.extension.sendMessage(target['src'], responseHandler);
+            src = target['src']
+            if (getTopDomain(src) == "sinaimg.cn") {
+                src = hackSinaimg(src);
+            }
+            console.log(src);
+            chrome.extension.sendMessage(src, responseHandler);
         }
 };
 
