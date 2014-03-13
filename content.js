@@ -3,7 +3,7 @@ responseHandler = function(response) {
 };
 
 biggerPicture = function(x, y) {
-    return x['size'] - y['size'];
+    return x['height'] * x['width'] - y['height'] * y['width'];
 };
 
 getVisibleImgs = function() {
@@ -53,28 +53,19 @@ hackSinaimg = function(src) {
 
 savePicture = function() {
     var target;
-    var imgs, pics = [];
+    var imgs;
     var src;
+
     imgs = getVisibleImgs();
     if (imgs && imgs.length > 0) {
-        for (var i = 0; i < imgs.length; i++) {
-            pics[i] = {
-                height: imgs[i]['height'],
-                width: imgs[i]['width'],
-                size: imgs[i]['height'] * imgs[i]['width'],
-                src: imgs[i]['src'],
-                x: imgs[i]['x'],
-                y: imgs[i]['y'],
-            }
-        }
-        pics.sort(biggerPicture);
-        target = pics.pop();
+        imgs.sort(biggerPicture);
+        target = imgs.pop();
     } else {
         console.log("No picture detected!");
         return;
     }
 
-    if (target && (target['size'] > 400 * 300 ||
+    if (target && (target['height'] * target['width'] > 400 * 300 ||
         confirm("Image is too small, are you sure? " + target['width'] + '*' + target['height']))) {
             src = target['src']
             if (getTopDomain(src) == "sinaimg.cn") {
@@ -91,7 +82,8 @@ onKeyPress = function(keyevent) {
     k = String.fromCharCode(keyevent.charCode);
     targetName = keyevent.target.nodeName.toLowerCase();
     // TODO: need to find better way to avoid invoking saving when typing
-    if (targetName == 'body' || targetName == 'div') {
+    if (!(keyevent.currentTarget.activeElement.isContentEditable ||
+        targetName == 'input' || targetName == 'textarea')) {
         if (key_func_mappings.hasOwnProperty(k))
             key_func_mappings[k]();
         return k;
