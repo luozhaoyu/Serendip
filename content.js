@@ -72,7 +72,7 @@ savePicture = function() {
                 src = hackSinaimg(src);
             }
             console.log(src);
-            chrome.extension.sendMessage(src, responseHandler);
+            chrome.runtime.sendMessage(src, responseHandler);
         }
 };
 
@@ -84,8 +84,10 @@ onKeyPress = function(keyevent) {
     // TODO: need to find better way to avoid invoking saving when typing
     if (!(keyevent.currentTarget.activeElement.isContentEditable ||
         targetName == 'input' || targetName == 'textarea')) {
-        if (key_func_mappings.hasOwnProperty(k))
+        if (key_func_mappings.hasOwnProperty(k)) {
+            console.log(k, " is invoked");
             key_func_mappings[k]();
+        }
         return k;
     }
 };

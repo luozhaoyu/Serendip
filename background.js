@@ -39,7 +39,7 @@ onMessage = function(request, sender, sendResponse) {
     try {
         console.log(request + '\tdownloading...');
         chrome.downloads.download({saveAs: true, url: request, conflictAction: "prompt"},
-            function(id){console.log("background.js callback: " + id);});
+            function(id){console.log("chrome.downloads.download callback: " + id);});
     } catch (err) {
         alert(err.description);
     }
