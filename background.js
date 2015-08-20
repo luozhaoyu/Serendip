@@ -21,6 +21,7 @@ determineFilename = function(downloadItem, suggest) {
         extension = mimeConvert[downloadItem.mime];
     } else {
         extension = 'jpg';
+        console.log("debug:" + downloadItem);
         alert("Unknown MIME type: " + downloadItem.mime);
     }
     isodate = new Date().toISOString();
@@ -37,7 +38,7 @@ onMessage = function(request, sender, sendResponse) {
         'sender': sender
     }
     try {
-        console.log(request + '\tdownloading...');
+        console.log("downloading:" + request);
         chrome.downloads.download({saveAs: true, url: request, conflictAction: "prompt"},
             function(id){console.log("chrome.downloads.download callback: " + id);});
     } catch (err) {

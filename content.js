@@ -71,7 +71,7 @@ savePicture = function() {
             if (getTopDomain(src) == "sinaimg.cn") {
                 src = hackSinaimg(src);
             }
-            console.log(src);
+            console.log("found:" + src);
             chrome.runtime.sendMessage(src, responseHandler);
         }
 };
